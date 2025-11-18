@@ -1,0 +1,184 @@
+@import "tailwindcss";
+
+/* ------------------------------
+   ROOT VARIABLES
+------------------------------ */
+:root {
+  --foreground-rgb: 30, 41, 59; /* text-slate-800 */
+  --background-start-rgb: 255, 255, 255;
+  --background-end-rgb: 255, 255, 255;
+
+  --primary-color: #1d4ed8;   /* blue-700 */
+  --primary-dark: #1e40af;    /* blue-800 */
+  --secondary-color: #dc2626; /* red-600 */
+  --accent-color: #f59e0b;    /* amber-500 */
+}
+
+/* ------------------------------
+   BASE RESETS
+------------------------------ */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  max-width: 100vw;
+  overflow-x: hidden;
+  font-family: var(--font-poppins), sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background-color: #ffffff;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ------------------------------
+   LINK & INTERACTIVE ELEMENTS
+------------------------------ */
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: 0.25s ease;
+}
+
+button,
+input,
+textarea,
+select {
+  transition: 0.25s ease;
+}
+
+button:focus,
+input:focus,
+textarea:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* ------------------------------
+   CUSTOM SCROLLBAR
+------------------------------ */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9; /* slate-100 */
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #1d4ed8, #1e40af);
+  border-radius: 10px;
+}
+
+/* ------------------------------
+   TEXT SELECTION
+------------------------------ */
+::selection {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* ------------------------------
+   ANIMATIONS (dipertahankan)
+------------------------------ */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes bounceSoft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* Utility Animation Classes */
+.animate-fade-in {
+  animation: fadeIn 0.7s ease-out;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.6s ease-out;
+}
+
+.animate-bounce-soft {
+  animation: bounceSoft 2s infinite ease-in-out;
+}
+
+/* ------------------------------
+   CARD HOVER (lebih clean)
+------------------------------ */
+.card-hover {
+  transition: 0.25s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+}
+
+/* ------------------------------
+   GRADIENT TEXT (dipertahankan)
+------------------------------ */
+.gradient-text {
+  background: linear-gradient(135deg, #1d4ed8, #2563eb, #60a5fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ------------------------------
+   BUTTONS — simplifikasi & konsisten
+------------------------------ */
+.btn-primary {
+  background: var(--primary-color);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: 0.25s ease;
+  border: none;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+/* ------------------------------
+   MOBILE NAV SUPPORT
+------------------------------ */
+.mobile-menu-open {
+  transform: translateX(0);
+}
+
+.mobile-menu-closed {
+  transform: translateX(-100%);
+}
+/* NAVBAR BLUR ON SCROLL */
+.navbar-glass {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  background-color: rgba(255, 255, 255, 0.7);
+  transition: 0.25s ease;
+}
+
+/* Saat scroll, opacity & shadow berubah */
+.navbar-scrolled {
+  background-color: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
