@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 
 const featured = {
   id: "kobe-bryant-meninggal",
@@ -65,6 +66,21 @@ const newsData = [
 ];
 
 export default function BeritaPage() {
+  const [selectedNews, setSelectedNews] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
+
+  // === ESC TO CLOSE MODAL ===
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setOpenModal(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#0f1a2b] text-white pb-20">
 
@@ -78,9 +94,12 @@ export default function BeritaPage() {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="col-span-2"
         >
-          <Link
-            href={`/berita/${featured.id}`}
-            className="relative rounded-2xl overflow-hidden shadow-xl block"
+          <div
+            onClick={() => {
+              setSelectedNews(featured);
+              setOpenModal(true);
+            }}
+            className="relative rounded-2xl overflow-hidden shadow-xl block cursor-pointer"
           >
             <div className="relative w-full h-[550px]">
               <Image
@@ -96,15 +115,13 @@ export default function BeritaPage() {
             </div>
 
             <div className="absolute bottom-0 p-8 text-white bg-gradient-to-t from-black/40 to-transparent w-full">
-              <h2 className="text-3xl font-bold mb-2 max-w-xl">
-                {featured.title}
-              </h2>
+              <h2 className="text-3xl font-bold mb-2 max-w-xl">{featured.title}</h2>
               <p className="text-gray-200 max-w-lg">{featured.excerpt}</p>
               <span className="mt-4 inline-block text-sm font-semibold text-orange-400">
                 Read more →
               </span>
             </div>
-          </Link>
+          </div>
         </motion.div>
 
         {/* Sidebar Latest Posts */}
@@ -121,9 +138,12 @@ export default function BeritaPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.25 + i * 0.1 }}
             >
-              <Link
-                href={`/berita/${news.id}`}
-                className="flex items-center gap-4 bg-[#13203a] rounded-xl p-4 shadow-sm hover:bg-[#1b2a45] transition"
+              <div
+                onClick={() => {
+                  setSelectedNews(news);
+                  setOpenModal(true);
+                }}
+                className="flex items-center gap-4 bg-[#13203a] rounded-xl p-4 shadow-sm hover:bg-[#1b2a45] transition cursor-pointer"
               >
                 <div className="relative w-32 h-20 rounded-lg overflow-hidden">
                   <Image
@@ -140,7 +160,7 @@ export default function BeritaPage() {
                     {news.title}
                   </h3>
                 </div>
-              </Link>
+              </div>
             </motion.div>
           ))}
         </motion.div>
@@ -174,9 +194,12 @@ export default function BeritaPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2 + i * 0.1 }}
             >
-              <Link
-                href={`/berita/${news.id}`}
-                className="block bg-[#13203a] p-5 rounded-2xl shadow-sm hover:bg-[#1b2a45] transition"
+              <div
+                onClick={() => {
+                  setSelectedNews(news);
+                  setOpenModal(true);
+                }}
+                className="block bg-[#13203a] p-5 rounded-2xl shadow-sm hover:bg-[#1b2a45] transition cursor-pointer"
               >
                 <div className="relative w-full h-48 rounded-xl overflow-hidden">
                   <Image
@@ -200,11 +223,54 @@ export default function BeritaPage() {
                 <span className="text-orange-400 text-sm font-semibold mt-3 inline-block">
                   Read more →
                 </span>
-              </Link>
+              </div>
             </motion.div>
           ))}
         </div>
       </section>
+
+      {/* ================= MODAL DETAIL BERITA ================= */}
+      {openModal && selectedNews && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50"
+        >
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="bg-[#13203a] p-6 rounded-2xl max-w-xl w-full relative"
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setOpenModal(false)}
+              className="absolute top-3 right-3 text-white text-xl hover:text-red-400 transition"
+            >
+              ✕
+            </button>
+
+            {/* Image */}
+            <div className="relative w-full h-64 rounded-xl overflow-hidden">
+              <Image
+                src={selectedNews.image}
+                alt={selectedNews.title}
+                fill
+                className="object-cover"
+              />
+            </div>
+
+            {/* Title */}
+            <h2 className="text-2xl font-bold mt-4">{selectedNews.title}</h2>
+
+            {/* Date */}
+            <p className="text-gray-400 text-sm mt-1">{selectedNews.date}</p>
+
+            {/* Content */}
+            <p className="text-gray-200 mt-4">{selectedNews.excerpt}</p>
+          </motion.div>
+        </motion.div>
+      )}
     </div>
   );
 }
